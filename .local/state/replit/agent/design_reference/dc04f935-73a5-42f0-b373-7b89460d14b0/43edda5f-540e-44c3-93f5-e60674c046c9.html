@@ -1,0 +1,482 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Management Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    colors: {
+                        primary: {
+                            50: '#EFF6FF',
+                            500: '#3B82F6',
+                            600: '#2563EB',
+                            700: '#1D4ED8'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-50 font-sans">
+    <!-- @COMPONENT: AdminLayout -->
+    <div class="flex h-screen overflow-hidden">
+        <!-- @COMPONENT: Sidebar -->
+        <div class="w-64 bg-white border-r border-slate-200 flex flex-col">
+            <!-- Logo -->
+            <div class="p-6 border-b border-slate-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-white text-sm"></i>
+                    </div>
+                    <h1 class="text-xl font-semibold text-slate-900">LoanAdmin</h1>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg bg-primary-50 text-primary-700 font-medium">
+                    <i class="fas fa-chart-pie w-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">
+                    <i class="fas fa-building w-5"></i>
+                    <span>Loan Providers</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">
+                    <i class="fas fa-users w-5"></i>
+                    <span>Applicants</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">
+                    <i class="fas fa-file-alt w-5"></i>
+                    <span>Applications</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">
+                    <i class="fas fa-history w-5"></i>
+                    <span>Audit Log</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">
+                    <i class="fas fa-chart-bar w-5"></i>
+                    <span>Reports</span>
+                </a>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="p-4 border-t border-slate-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-slate-300 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-slate-600 text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-slate-900" data-mock="true">Admin User</p>
+                        <p class="text-xs text-slate-500" data-mock="true">admin@loanadmin.com</p>
+                    </div>
+                    <button class="text-slate-400 hover:text-slate-600">
+                        <i class="fas fa-cog text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: Sidebar -->
+
+        <!-- @COMPONENT: MainContent -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- @COMPONENT: Header -->
+            <header class="bg-white border-b border-slate-200 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-slate-900">Dashboard</h2>
+                        <p class="text-slate-600 mt-1">Monitor your loan management system</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <!-- Search -->
+                        <div class="relative">
+                            <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-64">
+                            <i class="fas fa-search absolute left-3 top-3 text-slate-400"></i>
+                        </div>
+                        <!-- Notifications -->
+                        <button class="relative p-2 text-slate-400 hover:text-slate-600">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+            <!-- @END_COMPONENT: Header -->
+
+            <!-- @COMPONENT: DashboardContent -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-slate-600 text-sm font-medium">Total Applications</p>
+                                <p class="text-2xl font-bold text-slate-900 mt-1" data-mock="true">1,247</p>
+                                <p class="text-green-600 text-sm mt-2">
+                                    <i class="fas fa-arrow-up text-xs"></i> 12% from last month
+                                </p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-file-alt text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-slate-600 text-sm font-medium">Approved Loans</p>
+                                <p class="text-2xl font-bold text-slate-900 mt-1" data-mock="true">892</p>
+                                <p class="text-green-600 text-sm mt-2">
+                                    <i class="fas fa-arrow-up text-xs"></i> 8% from last month
+                                </p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-check-circle text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-slate-600 text-sm font-medium">Pending Review</p>
+                                <p class="text-2xl font-bold text-slate-900 mt-1" data-mock="true">234</p>
+                                <p class="text-yellow-600 text-sm mt-2">
+                                    <i class="fas fa-clock text-xs"></i> Needs attention
+                                </p>
+                            </div>
+                            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-clock text-yellow-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-slate-600 text-sm font-medium">Total Value</p>
+                                <p class="text-2xl font-bold text-slate-900 mt-1" data-mock="true">$2.4M</p>
+                                <p class="text-green-600 text-sm mt-2">
+                                    <i class="fas fa-arrow-up text-xs"></i> 15% from last month
+                                </p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-dollar-sign text-purple-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Recent Applications -->
+                    <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm">
+                        <div class="p-6 border-b border-slate-200">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-semibold text-slate-900">Recent Applications</h3>
+                                <button class="text-primary-600 hover:text-primary-700 text-sm font-medium">View All</button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Applicant</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Amount</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Provider</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200">
+                                    <!-- @MAP: applications.map(app => ( -->
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center">
+                                                    <span class="text-xs font-medium text-slate-600" data-mock="true">JD</span>
+                                                </div>
+                                                <div class="ml-3">
+                                                    <p class="text-sm font-medium text-slate-900" data-mock="true">John Doe</p>
+                                                    <p class="text-sm text-slate-500" data-mock="true">john@example.com</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900" data-mock="true">$25,000</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900" data-mock="true">First National Bank</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">Pending</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500" data-mock="true">2024-01-15</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center">
+                                                    <span class="text-xs font-medium text-slate-600" data-mock="true">SM</span>
+                                                </div>
+                                                <div class="ml-3">
+                                                    <p class="text-sm font-medium text-slate-900" data-mock="true">Sarah Miller</p>
+                                                    <p class="text-sm text-slate-500" data-mock="true">sarah@example.com</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900" data-mock="true">$15,000</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900" data-mock="true">Credit Union Plus</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Approved</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500" data-mock="true">2024-01-14</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center">
+                                                    <span class="text-xs font-medium text-slate-600" data-mock="true">MJ</span>
+                                                </div>
+                                                <div class="ml-3">
+                                                    <p class="text-sm font-medium text-slate-900" data-mock="true">Michael Johnson</p>
+                                                    <p class="text-sm text-slate-500" data-mock="true">michael@example.com</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900" data-mock="true">$50,000</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900" data-mock="true">Metro Lending</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">Rejected</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500" data-mock="true">2024-01-13</td>
+                                    </tr>
+                                    <!-- @END_MAP )) -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Activity Feed -->
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
+                        <div class="p-6 border-b border-slate-200">
+                            <h3 class="text-lg font-semibold text-slate-900">Recent Activity</h3>
+                        </div>
+                        <div class="p-6 space-y-4 max-h-96 overflow-y-auto">
+                            <!-- @MAP: activities.map(activity => ( -->
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-plus text-blue-600 text-xs"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm text-slate-900" data-mock="true">New application submitted by <span class="font-medium">Emma Wilson</span></p>
+                                    <p class="text-xs text-slate-500 mt-1" data-mock="true">2 minutes ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-check text-green-600 text-xs"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm text-slate-900" data-mock="true">Loan approved for <span class="font-medium">David Chen</span></p>
+                                    <p class="text-xs text-slate-500 mt-1" data-mock="true">15 minutes ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-edit text-yellow-600 text-xs"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm text-slate-900" data-mock="true">Application updated by <span class="font-medium">Lisa Rodriguez</span></p>
+                                    <p class="text-xs text-slate-500 mt-1" data-mock="true">1 hour ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-times text-red-600 text-xs"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm text-slate-900" data-mock="true">Application rejected for <span class="font-medium">Robert Taylor</span></p>
+                                    <p class="text-xs text-slate-500 mt-1" data-mock="true">2 hours ago</p>
+                                </div>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <button class="bg-white border border-slate-200 rounded-xl p-6 text-left hover:shadow-md transition-shadow group">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                                <i class="fas fa-plus text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-slate-900">Add New Provider</h4>
+                                <p class="text-slate-600 text-sm">Register a new loan provider</p>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="bg-white border border-slate-200 rounded-xl p-6 text-left hover:shadow-md transition-shadow group">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                                <i class="fas fa-file-export text-green-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-slate-900">Export Reports</h4>
+                                <p class="text-slate-600 text-sm">Generate detailed reports</p>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="bg-white border border-slate-200 rounded-xl p-6 text-left hover:shadow-md transition-shadow group">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                                <i class="fas fa-cog text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-slate-900">System Settings</h4>
+                                <p class="text-slate-600 text-sm">Configure system preferences</p>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </main>
+            <!-- @END_COMPONENT: DashboardContent -->
+        </div>
+        <!-- @END_COMPONENT: MainContent -->
+    </div>
+    <!-- @END_COMPONENT: AdminLayout -->
+
+    <!-- @COMPONENT: Modal (Hidden by default) -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full mx-4 max-h-screen overflow-y-auto">
+            <div class="p-6 border-b border-slate-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-slate-900">Application Details</h3>
+                    <button class="text-slate-400 hover:text-slate-600" onclick="closeModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <!-- Modal content would be populated dynamically -->
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Applicant Name</label>
+                            <input type="text" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" data-mock="true" value="John Doe">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                            <input type="email" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" data-mock="true" value="john@example.com">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Loan Amount</label>
+                            <input type="text" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" data-mock="true" value="$25,000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Status</label>
+                            <select class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                <option>Pending</option>
+                                <option>Approved</option>
+                                <option>Rejected</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 border-t border-slate-200 flex justify-end space-x-3">
+                <button class="px-4 py-2 text-slate-600 hover:text-slate-800 transition-colors" onclick="closeModal()">Cancel</button>
+                <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">Save Changes</button>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: Modal -->
+
+    <!-- @COMPONENT: Toast Notification (Hidden by default) -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-white border border-slate-200 rounded-lg shadow-lg p-4 hidden transform transition-transform">
+        <div class="flex items-center space-x-3">
+            <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-check text-green-600 text-xs"></i>
+            </div>
+            <p class="text-sm text-slate-900">Action completed successfully!</p>
+            <button class="text-slate-400 hover:text-slate-600 ml-2" onclick="hideToast()">
+                <i class="fas fa-times text-xs"></i>
+            </button>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: Toast -->
+
+    <script>
+        (function() {
+            // TODO: Implement actual API calls and state management
+            
+            // Modal functionality
+            window.openModal = function() {
+                document.getElementById('modal').classList.remove('hidden');
+                document.getElementById('modal').classList.add('flex');
+            };
+
+            window.closeModal = function() {
+                document.getElementById('modal').classList.add('hidden');
+                document.getElementById('modal').classList.remove('flex');
+            };
+
+            // Toast notification
+            window.showToast = function(message, type = 'success') {
+                const toast = document.getElementById('toast');
+                toast.classList.remove('hidden');
+                toast.style.transform = 'translateY(0)';
+                
+                setTimeout(() => {
+                    hideToast();
+                }, 3000);
+            };
+
+            window.hideToast = function() {
+                const toast = document.getElementById('toast');
+                toast.style.transform = 'translateY(100%)';
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 300);
+            };
+
+            // Table row click handlers
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('tbody tr')) {
+                    // TODO: Implement row selection and detail view
+                    console.log('Row clicked - would show details');
+                }
+            });
+
+            // Search functionality placeholder
+            const searchInput = document.querySelector('input[placeholder="Search..."]');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    // TODO: Implement search functionality
+                    console.log('Searching for:', e.target.value);
+                });
+            }
+
+            // Quick action buttons
+            document.querySelectorAll('.group').forEach(button => {
+                button.addEventListener('click', function() {
+                    // TODO: Implement quick actions
+                    showToast('Feature coming soon!');
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
