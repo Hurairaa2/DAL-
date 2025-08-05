@@ -1,6 +1,20 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { db } from './db';
+import 'dotenv/config';
+
+async function testDatabaseConnection() {
+  try {
+    // Test the database connection with a simple query
+    await db.select().from(db.$inferSelect).limit(1);
+    console.log('✅ Database connection successful!');
+  } catch (error) {
+    console.error('❌ Database connection failed:', error);
+  }
+}
+
+testDatabaseConnection();
 
 const app = express();
 app.use(express.json());

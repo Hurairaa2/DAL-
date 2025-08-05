@@ -58,6 +58,14 @@ export const auditLogs = pgTable("audit_logs", {
   timestamp: timestamp("timestamp").defaultNow().notNull(),
 });
 
+// Users table
+export const users = pgTable('users', {
+  id: varchar('id').primaryKey().default(sql`gen_random_uuid()`),
+  name: text('name').notNull(),
+  email: text('email').notNull().unique(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
 // Insert schemas
 export const insertLoanProviderSchema = createInsertSchema(loanProviders).omit({
   id: true,
@@ -80,6 +88,11 @@ export const insertAuditLogSchema = createInsertSchema(auditLogs).omit({
   timestamp: true,
 });
 
+export const insertUserSchema = createInsertSchema(users).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Types
 export type LoanProvider = typeof loanProviders.$inferSelect;
 export type InsertLoanProvider = z.infer<typeof insertLoanProviderSchema>;
@@ -92,6 +105,9 @@ export type InsertLoanApplication = z.infer<typeof insertLoanApplicationSchema>;
 
 export type AuditLog = typeof auditLogs.$inferSelect;
 export type InsertAuditLog = z.infer<typeof insertAuditLogSchema>;
+
+export type User = typeof users.$inferSelect;
+export type InsertUser = z.infer<typeof insertUserSchema>;
 
 // Extended types for joined data
 export type LoanApplicationWithDetails = LoanApplication & {
