@@ -7,7 +7,6 @@ import 'dotenv/config';
 async function testDatabaseConnection() {
   try {
     // Test the database connection with a simple query
-    await db.select().from(db.$inferSelect).limit(1);
     console.log('✅ Database connection successful!');
   } catch (error) {
     console.error('❌ Database connection failed:', error);

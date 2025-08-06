@@ -1,10 +1,10 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, decimal, timestamp, integer } from "drizzle-orm/pg-core";
+import { sqliteTable, text, real, integer } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const loanProviders = pgTable("loan_providers", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+export const loanProviders = sqliteTable("loan_providers", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   phone: text("phone").notNull(),
@@ -12,14 +12,14 @@ export const loanProviders = pgTable("loan_providers", {
   website: text("website"),
   licenseNumber: text("license_number").notNull(),
   status: text("status").notNull().default("active"), // active, inactive, suspended
-  interestRateMin: decimal("interest_rate_min", { precision: 5, scale: 2 }).notNull(),
-  interestRateMax: decimal("interest_rate_max", { precision: 5, scale: 2 }).notNull(),
-  maxLoanAmount: decimal("max_loan_amount", { precision: 12, scale: 2 }).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  interestRateMin: real("interest_rate_min").notNull(),
+  interestRateMax: real("interest_rate_max").notNull(),
+  maxLoanAmount: real("max_loan_amount").notNull(),
+  createdAt: integer("created_at", { mode: 'timestamp' }).$defaultFn(() => new Date()),
 });
 
-export const applicants = pgTable("applicants", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+export const applicants = sqliteTable("applicants", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   firstName: text("first_name").notNull(),
   lastName: text("last_name").notNull(),
   email: text("email").notNull().unique(),
@@ -28,42 +28,42 @@ export const applicants = pgTable("applicants", {
   dateOfBirth: text("date_of_birth").notNull(),
   ssn: text("ssn").notNull(),
   employmentStatus: text("employment_status").notNull(), // employed, unemployed, self-employed, retired
-  annualIncome: decimal("annual_income", { precision: 12, scale: 2 }).notNull(),
+  annualIncome: real("annual_income").notNull(),
   creditScore: integer("credit_score"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdAt: integer("created_at", { mode: 'timestamp' }).$defaultFn(() => new Date()),
 });
 
-export const loanApplications = pgTable("loan_applications", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  applicantId: varchar("applicant_id").notNull().references(() => applicants.id),
-  providerId: varchar("provider_id").notNull().references(() => loanProviders.id),
-  loanAmount: decimal("loan_amount", { precision: 12, scale: 2 }).notNull(),
+export const loanApplications = sqliteTable("loan_applications", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  applicantId: text("applicant_id").notNull().references(() => applicants.id),
+  providerId: text("provider_id").notNull().references(() => loanProviders.id),
+  loanAmount: real("loan_amount").notNull(),
   loanPurpose: text("loan_purpose").notNull(),
   loanTerm: integer("loan_term").notNull(), // in months
-  interestRate: decimal("interest_rate", { precision: 5, scale: 2 }),
+  interestRate: real("interest_rate"),
   status: text("status").notNull().default("pending"), // pending, approved, rejected, under_review
   notes: text("notes"),
-  submittedAt: timestamp("submitted_at").defaultNow().notNull(),
-  reviewedAt: timestamp("reviewed_at"),
+  submittedAt: integer("submitted_at", { mode: 'timestamp' }).$defaultFn(() => new Date()),
+  reviewedAt: integer("reviewed_at", { mode: 'timestamp' }),
   reviewedBy: text("reviewed_by"),
 });
 
-export const auditLogs = pgTable("audit_logs", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+export const auditLogs = sqliteTable("audit_logs", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   entityType: text("entity_type").notNull(), // provider, applicant, application
   entityId: text("entity_id").notNull(),
   action: text("action").notNull(), // create, update, delete, view
   details: text("details").notNull(),
   userId: text("user_id").notNull().default("admin"),
-  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  timestamp: integer("timestamp", { mode: 'timestamp' }).$defaultFn(() => new Date()),
 });
 
 // Users table
-export const users = pgTable('users', {
-  id: varchar('id').primaryKey().default(sql`gen_random_uuid()`),
+export const users = sqliteTable('users', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
   name: text('name').notNull(),
   email: text('email').notNull().unique(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
 });
 
 // Insert schemas

@@ -5,7 +5,6 @@ import {
   Users, 
   FileText, 
   History, 
-  BarChart, 
   Settings 
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -36,11 +35,7 @@ const navigationItems = [
     href: "/audit-log",
     icon: History,
   },
-  {
-    name: "Reports",
-    href: "/reports",
-    icon: BarChart,
-  },
+
 ];
 
 export default function Sidebar() {

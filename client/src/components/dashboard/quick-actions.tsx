@@ -1,6 +1,6 @@
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Plus, FileText, Settings } from "lucide-react";
+import { Plus, Settings } from "lucide-react";
 
 export default function QuickActions() {
   const [, setLocation] = useLocation();
@@ -13,13 +13,7 @@ export default function QuickActions() {
       onClick: () => setLocation("/loan-providers"),
       color: "bg-blue-100 group-hover:bg-blue-200 text-blue-600",
     },
-    {
-      title: "Export Reports",
-      description: "Generate detailed reports", 
-      icon: FileText,
-      onClick: () => setLocation("/reports"),
-      color: "bg-green-100 group-hover:bg-green-200 text-green-600",
-    },
+
     {
       title: "System Settings",
       description: "Configure system preferences",

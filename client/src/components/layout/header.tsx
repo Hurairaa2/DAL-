@@ -9,7 +9,7 @@ const pagetitles = {
   "/applicants": "Applicants", 
   "/applications": "Applications",
   "/audit-log": "Audit Log",
-  "/reports": "Reports",
+
 };
 
 const pageDescriptions = {
@@ -18,7 +18,7 @@ const pageDescriptions = {
   "/applicants": "View and manage loan applicants",
   "/applications": "Track and manage loan applications",
   "/audit-log": "View system activity and changes",
-  "/reports": "Generate and view system reports",
+
 };
 
 export default function Header() {

@@ -9,7 +9,7 @@ import LoanProviders from "@/pages/loan-providers";
 import Applicants from "@/pages/applicants";
 import Applications from "@/pages/applications";
 import AuditLog from "@/pages/audit-log";
-import Reports from "@/pages/reports";
+
 import MainLayout from "@/components/layout/main-layout";
 
 function Router() {
@@ -21,7 +21,7 @@ function Router() {
         <Route path="/applicants" component={Applicants} />
         <Route path="/applications" component={Applications} />
         <Route path="/audit-log" component={AuditLog} />
-        <Route path="/reports" component={Reports} />
+
         <Route component={NotFound} />
       </Switch>
     </MainLayout>
